@@ -5,6 +5,9 @@
 #include <QtDebug>
 
 QSerialPort *serial;
+QString picture;
+
+int flag;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -13,13 +16,15 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     QPixmap pix("/home/pi/Downloads/hellotest.jpeg");
-    int w=ui->label_pic->width();
-    int h = ui->label_pic->height();
-    ui->label_pic->setPixmap(pix.scaled(w,h,Qt::KeepAspectRatio));
+//    int w=ui->label_pic->width();
+//    int h = ui->label_pic->height();
+    int w=1024;
+    int h = 768;
+    ui->label_pic->setPixmap(pix.scaled(w,h,Qt::KeepAspectRatioByExpanding));
 
     timer = new QTimer(this);
     connect(timer,SIGNAL(timeout()),this, SLOT(myfunction()));
-    timer->start(2000);
+    timer->start(1000);
 
     foreach(const QSerialPortInfo &info, QSerialPortInfo::availablePorts())
     {
@@ -50,31 +55,57 @@ MainWindow::~MainWindow()
 void MainWindow::myfunction()
 {
     qDebug()<<"update..";
+    if (flag==0)
+    {
+        flag=1;
+        picture=":/resources/Images/number_1.svg";
+     }
+    else
+    {
+        flag=0;
+        picture=":/resources/Images/number_1_txt.svg";
+    }
+
+    QPixmap pix(picture);
+//    int w=ui->label_pic->width();
+//    int h = ui->label_pic->height();
+    int w=1024;
+    int h = 768;
+    ui->label_pic->setPixmap(pix.scaled(w,h,Qt::KeepAspectRatio));
+
 }
 
 void MainWindow::on_pBConferma_clicked()
 {
     QString conferma=ui->lE_SelPict->text();
-    QString picture;
+//    QString picture;
 
     if(conferma=="1")
-        picture="/home/pi/Downloads/number_1.jpeg";
+        if (flag==0)
+            picture=":/resources/Images/number_1.svg";
+        else
+            picture=":/resources/Images/number_1_txt.svg";
+
+    else if(conferma=="10")
+            picture=":/resources/Images/number_1_txt.svg";
     else if(conferma=="2")
-            picture="/home/pi/Downloads/number_2.jpeg";
+            picture=":/resources/Images/number_2.svg";
     else if(conferma=="3")
-            picture="/home/pi/Downloads/number_3.jpeg";
+            picture=":/resources/Images/number_3.svg";
     else if(conferma=="4")
-            picture="/home/pi/Downloads/number_4.jpeg";
+            picture=":/resources/Images/number_4.svg";
     else if(conferma=="5")
-            picture="/home/pi/Downloads/mosaico.jpeg";
+            picture=":/resources/Images/mosaico.svg";
     else if(conferma=="6")
-            picture="/home/pi/Downloads/barre.jpeg";
+            picture=":/resources/Images/barre.svg";
     else if(conferma=="7")
-            picture="/home/pi/Downloads/cinescopio.jpeg";
+            picture=":/resources/Images/cinescopio.svg";
 
     QPixmap pix(picture);
-    int w=ui->label_pic->width();
-    int h = ui->label_pic->height();
+//    int w=ui->label_pic->width();
+//    int h = ui->label_pic->height();
+    int w=1024;
+    int h = 768;
     ui->label_pic->setPixmap(pix.scaled(w,h,Qt::KeepAspectRatio));
 }
 
@@ -86,7 +117,7 @@ void MainWindow::on_quit_clicked()
 
 void MainWindow::serialReceived()
 {
-    QString picture;
+    QString picture1;
     QByteArray ba;
     char res=0;
     int returnval=0;
@@ -104,21 +135,21 @@ void MainWindow::serialReceived()
     qDebug()<< ba;
 
     if((ba[1]& 0x07)== 1)
-        picture=":/resources/Images/number_1.jpeg";
+        picture1=":/resources/Images/number_1.jpeg";
     else if((ba[1]& 0x07)== 2)
-            picture=":/resources/Images/number_2.jpeg";
+            picture1=":/resources/Images/number_2.jpeg";
     else if((ba[1]& 0x07)== 3)
-            picture=":/resources/Images/number_3.jpeg";
+            picture1=":/resources/Images/number_3.jpeg";
     else if((ba[1]& 0x07)== 4)
-            picture=":/resources/Images/number_4.jpeg";
+            picture1=":/resources/Images/number_4.jpeg";
     else if((ba[1]& 0x07)== 5)
-            picture=":/resources/Images/mosaico.jpeg";
+            picture1=":/resources/Images/mosaico.jpeg";
     else if((ba[1]& 0x07)== 6)
-            picture=":/resources/Images/barre.jpeg";
+            picture1=":/resources/Images/barre.jpeg";
     else if((ba[1]& 0x07)== 7)
-            picture=":/resources/Images/cinescopio.jpeg";
+            picture1=":/resources/Images/cinescopio.jpeg";
 
-    QPixmap pix(picture);
+    QPixmap pix(picture1);
     int w=ui->label_pic->width();
     int h = ui->label_pic->height();
     ui->label_pic->setPixmap(pix.scaled(w,h,Qt::KeepAspectRatio));
