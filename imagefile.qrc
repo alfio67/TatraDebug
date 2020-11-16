@@ -1,12 +1,13 @@
 <RCC>
     <qresource prefix="/resources">
-        <file>Images/barre.jpeg</file>
-        <file>Images/cinescopio.jpeg</file>
-        <file>Images/hellotest.jpeg</file>
-        <file>Images/mosaico.jpeg</file>
-        <file>Images/number_1.jpeg</file>
-        <file>Images/number_2.jpeg</file>
-        <file>Images/number_3.jpeg</file>
-        <file>Images/number_4.jpeg</file>
+        <file>Images/cinescopio.svg</file>
+        <file>Images/hellotest.svg</file>
+        <file>Images/mosaico.svg</file>
+        <file>Images/number_1.svg</file>
+        <file>Images/number_2.svg</file>
+        <file>Images/number_3.svg</file>
+        <file>Images/number_4.svg</file>
+        <file>Images/barre.svg</file>
+        <file>Images/number_1_txt.svg</file>
     </qresource>
 </RCC>
